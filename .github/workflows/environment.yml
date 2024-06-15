@@ -11,3 +11,7 @@ dependencies:
   - jupyter
   - pytest
   - flake8
+
+git add .github/workflows/python-package-conda.yml environment.yml
+git commit -m "Add environment.yml and update workflow"
+git push
