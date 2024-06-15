@@ -44,7 +44,17 @@ jobs:
         conda install pytest
         pytest
 
-    # Run main.js if necessary
+    # Check if main.js exists
+    - name: Check if main.js exists
+      id: check_main_js
+      run: |
+        if [ -f main.js ]; then
+          echo "main_js_exists=true" >> $GITHUB_ENV
+        else
+          echo "main_js_exists=false" >> $GITHUB_ENV
+        fi
+
+    # Run main.js if it exists
     - name: Run main.js
+      if: env.main_js_exists == 'true'
       run: node main.js
-      if: exists('main.js')
