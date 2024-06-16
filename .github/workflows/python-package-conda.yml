@@ -45,13 +45,24 @@ jobs:
 
       - name: Download environment.yml
         run: |
-          mkdir -p .github/workflows
-          curl -o .github/workflows/environment.yml -L https://github.com/lauashk/data-science-projects/raw/main/.github/workflows/environment.yml
+          echo "name: myenv" > .github/workflows/environment.yml
+          echo "channels:" >> .github/workflows/environment.yml
+          echo "  - defaults" >> .github/workflows/environment.yml
+          echo "dependencies:" >> .github/workflows/environment.yml
+          echo "  - python=3.8" >> .github/workflows/environment.yml
+          echo "  - numpy" >> .github/workflows/environment.yml
+          echo "  - pandas" >> .github/workflows/environment.yml
+          echo "  - scikit-learn" >> .github/workflows/environment.yml
+          echo "  - matplotlib" >> .github/workflows/environment.yml
+          echo "  - seaborn" >> .github/workflows/environment.yml
+          echo "  - jupyter" >> .github/workflows/environment.yml
+          echo "  - pytest" >> .github/workflows/environment.yml
+          echo "  - flake8" >> .github/workflows/environment.yml
 
       - name: Create and Activate Conda environment
         run: |
           source $HOME/miniconda3/etc/profile.d/conda.sh
-          conda env create -n myenv -f .github/workflows/environment.yml
+          conda env create -f .github/workflows/environment.yml
           conda activate myenv
 
       - name: Lint with flake8
@@ -66,8 +77,7 @@ jobs:
         run: |
           source $HOME/miniconda3/etc/profile.d/conda.sh
           conda activate myenv
-          pip install pytest
-          pytest || echo "Pytest encountered errors but continuing..."
+          pytest
 
       # Check if main.js exists (if needed)
       - name: Check if main.js exists
