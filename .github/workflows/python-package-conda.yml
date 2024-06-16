@@ -51,9 +51,9 @@ jobs:
 
     - name: Create and Activate Conda environment
       run: |
+        source $HOME/miniconda3/etc/profile.d/conda.sh
         conda env create -n myenv -f .github/workflows/environment.yml
-        echo "source $HOME/miniconda3/etc/profile.d/conda.sh" >> $GITHUB_ENV
-        echo "conda activate myenv" >> $GITHUB_ENV
+        conda activate myenv
 
     - name: Lint with flake8
       run: |
