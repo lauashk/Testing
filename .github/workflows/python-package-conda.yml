@@ -46,15 +46,21 @@ jobs:
         mkdir -p .github/workflows
         curl -o .github/workflows/environment.yml -L https://github.com/lauashk/data-science-projects/raw/main/.github/workflows/environment.yml
 
+    - name: Create and Activate Conda environment
+      run: |
+        conda env create -n myenv -f .github/workflows/environment.yml
+        echo "source $HOME/miniconda3/etc/profile.d/conda.sh" >> $GITHUB_ENV
+        echo "conda activate myenv" >> $GITHUB_ENV
+
     - name: Initialize Conda (if needed)
       run: |
         conda init bash
         source ~/.bashrc
         
-    - name: Create Conda environment
+    - name: Activate Conda environment
       run: |
-        conda env create -f .github/workflows/environment.yml
-        conda activate base
+        source $HOME/miniconda3/etc/profile.d/conda.sh
+        conda activate myenv
 
     - name: Lint with flake8
       run: |
