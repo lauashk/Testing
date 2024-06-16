@@ -28,13 +28,18 @@ jobs:
       with:
         python-version: 3.8
 
+    - name: Download environment.yml
+      run: |
+        mkdir -p .github/workflows
+        curl -o .github/workflows/environment.yml -L https://github.com/lauashk/data-science-projects/raw/main/.github/workflows/environment.yml
+
     - name: Add conda to system path
       run: |
         echo $CONDA/bin >> $GITHUB_PATH
 
     - name: Install dependencies
       run: |
-        conda env update --file environment.yml --name base
+        conda env update --file .github/workflows/environment.yml --name base
 
     - name: Lint with flake8
       run: |
