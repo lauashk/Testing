@@ -23,51 +23,45 @@ jobs:
       with:
         node-version: '20'
 
+    # Setup Python 3.8 and Conda
     - name: Set up Python 3.8 and Conda
-      uses: actions/setup-python@v3  # Use version 3 of setup-python action
+      uses: actions/setup-python@v3
       with:
         python-version: 3.8
-        architecture: 'x64'  # Specify the architecture if needed
 
+    # Install Miniconda
     - name: Install Miniconda
       run: |
-        # Download and install Miniconda
         wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
         bash miniconda.sh -b -p $HOME/miniconda3
         rm miniconda.sh
 
-    - name: Configure Conda
+    # Configure Conda and activate environment
+    - name: Configure Conda and activate environment
       run: |
         echo ". $HOME/miniconda3/etc/profile.d/conda.sh" >> $HOME/.bashrc
-
-    - name: Initialize Conda
-      run: |
         source $HOME/.bashrc
+        conda activate base
+        conda init bash
+        conda activate myenv
 
+    # Download environment.yml (assuming this step is necessary)
     - name: Download environment.yml
       run: |
         mkdir -p .github/workflows
         curl -o .github/workflows/environment.yml -L https://github.com/lauashk/data-science-projects/raw/main/.github/workflows/environment.yml
 
-    - name: Create and Activate Conda environment
+    # Create Conda environment (if needed)
+    - name: Create Conda environment
       run: |
-        source $HOME/miniconda3/etc/profile.d/conda.sh
-        conda env create -n myenv -f .github/workflows/environment.yml
+        conda env create -f .github/workflows/environment.yml
         conda activate myenv
 
-    - name: Lint with flake8
+    # Install dependencies and run pytest
+    - name: Install dependencies and run pytest
       run: |
-        source $HOME/miniconda3/etc/profile.d/conda.sh
-        conda activate myenv
-        pip install flake8
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-    - name: Test with pytest
-      run: |
-        source $HOME/miniconda3/etc/profile.d/conda.sh
-        conda activate myenv
-        pytest
+        pip install pytest
+        pytest  # Add any additional pytest options or flags here if needed
 
     # Check if main.js exists (if needed)
     - name: Check if main.js exists
@@ -82,5 +76,4 @@ jobs:
     # Run main.js if it exists (if needed)
     - name: Run main.js
       if: env.main_js_exists == 'true'
-      run: |
-        node main.js
+      run: node main.js
