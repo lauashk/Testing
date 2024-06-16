@@ -23,28 +23,38 @@ jobs:
       with:
         node-version: '20'
 
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2  # Updated to use version 2 of setup-python action
+    - name: Set up Python 3.8 and Conda
+      uses: actions/setup-python@v3  # Updated to use version 2 of setup-python action
       with:
         python-version: 3.8
+        architecture: 'x64'  # Specify the architecture if needed
+
+    - name: Install Miniconda
+      run: |
+        # Download and install Miniconda
+        wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+        bash miniconda.sh -b -p $HOME/miniconda3
+        echo "$HOME/miniconda3/bin" >> $GITHUB_PATH
+        rm miniconda.sh
+
+    - name: Configure Conda
+      run: |
+        conda init bash
+        source ~/.bashrc
 
     - name: Download environment.yml
       run: |
         mkdir -p .github/workflows
         curl -o .github/workflows/environment.yml -L https://github.com/lauashk/data-science-projects/raw/main/.github/workflows/environment.yml
 
-    - name: Add conda to system path
+    - name: Create Conda environment
       run: |
-        echo "$HOME/miniconda3/bin" >> $GITHUB_PATH
-
-    - name: Create conda environment
-      run: |
-        conda env create -f .github/workflows/environment.yml  # Use `conda env create` instead of `conda env update`
-        conda activate base  # Activate the environment
+        conda env create -f .github/workflows/environment.yml
+        conda activate base
 
     - name: Lint with flake8
       run: |
-        pip install flake8  # Install flake8 using pip within the activated environment
+        pip install flake8
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
