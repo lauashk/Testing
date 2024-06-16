@@ -39,6 +39,9 @@ jobs:
     - name: Configure Conda
       run: |
         echo ". $HOME/miniconda3/etc/profile.d/conda.sh" >> $HOME/.bashrc
+
+    - name: Initialize Conda
+      run: |
         source $HOME/.bashrc
 
     - name: Download environment.yml
@@ -52,24 +55,18 @@ jobs:
         echo "source $HOME/miniconda3/etc/profile.d/conda.sh" >> $GITHUB_ENV
         echo "conda activate myenv" >> $GITHUB_ENV
 
-    - name: Initialize Conda (if needed)
-      run: |
-        conda init bash
-        source ~/.bashrc
-        
-    - name: Activate Conda environment
+    - name: Lint with flake8
       run: |
         source $HOME/miniconda3/etc/profile.d/conda.sh
         conda activate myenv
-
-    - name: Lint with flake8
-      run: |
         pip install flake8
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
     - name: Test with pytest
       run: |
+        source $HOME/miniconda3/etc/profile.d/conda.sh
+        conda activate myenv
         pytest
 
     # Check if main.js exists (if needed)
@@ -85,4 +82,5 @@ jobs:
     # Run main.js if it exists (if needed)
     - name: Run main.js
       if: env.main_js_exists == 'true'
-      run: node main.js
+      run: |
+        node main.js
