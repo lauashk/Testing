@@ -24,7 +24,7 @@ jobs:
         node-version: '20'
 
     - name: Set up Python 3.8 and Conda
-      uses: actions/setup-python@v2  # Use version 2 of setup-python action
+      uses: actions/setup-python@v3  # Use version 3 of setup-python action
       with:
         python-version: 3.8
         architecture: 'x64'  # Specify the architecture if needed
@@ -40,7 +40,6 @@ jobs:
       run: |
         echo ". $HOME/miniconda3/etc/profile.d/conda.sh" >> $HOME/.bashrc
         source $HOME/.bashrc
-        conda init bash
 
     - name: Download environment.yml
       run: |
@@ -51,6 +50,11 @@ jobs:
       run: |
         conda env create -f .github/workflows/environment.yml
         conda activate base
+
+    - name: Initialize Conda (if needed)
+      run: |
+        conda init bash
+        source ~/.bashrc
 
     - name: Lint with flake8
       run: |
