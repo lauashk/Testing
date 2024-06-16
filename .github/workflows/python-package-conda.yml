@@ -24,7 +24,7 @@ jobs:
         node-version: '20'
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v2  # Updated to use version 2 of setup-python action
       with:
         python-version: 3.8
 
@@ -35,24 +35,24 @@ jobs:
 
     - name: Add conda to system path
       run: |
-        echo $CONDA/bin >> $GITHUB_PATH
+        echo "$HOME/miniconda3/bin" >> $GITHUB_PATH
 
-    - name: Install dependencies
+    - name: Create conda environment
       run: |
-        conda env update --file .github/workflows/environment.yml --name base
+        conda env create -f .github/workflows/environment.yml  # Use `conda env create` instead of `conda env update`
+        conda activate base  # Activate the environment
 
     - name: Lint with flake8
       run: |
-        conda install flake8
+        pip install flake8  # Install flake8 using pip within the activated environment
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
     - name: Test with pytest
       run: |
-        conda install pytest
         pytest
 
-    # Check if main.js exists
+    # Check if main.js exists (if needed)
     - name: Check if main.js exists
       id: check_main_js
       run: |
@@ -62,7 +62,7 @@ jobs:
           echo "main_js_exists=false" >> $GITHUB_ENV
         fi
 
-    # Run main.js if it exists
+    # Run main.js if it exists (if needed)
     - name: Run main.js
       if: env.main_js_exists == 'true'
       run: node main.js
