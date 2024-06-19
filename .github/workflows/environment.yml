@@ -1,13 +1,25 @@
-name: myenv
-channels:
-  - defaults
-dependencies:
-  - python=3.8
-  - numpy
-  - pandas
-  - scikit-learn
-  - matplotlib
-  - seaborn
-  - jupyter
-  - pytest
-  - flake8
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    name: myenv
+      channels:
+        - defaults
+      dependencies:
+        - python=3.8
+        - numpy
+        - pandas
+        - scikit-learn
+        - matplotlib
+        - seaborn
+        - jupyter
+        - pytest
+        - flake8
