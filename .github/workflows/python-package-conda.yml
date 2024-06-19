@@ -21,25 +21,32 @@ jobs:
           wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
           bash miniconda.sh -b -p $HOME/miniconda3
           rm miniconda.sh
+          source $HOME/miniconda3/etc/profile.d/conda.sh
+          conda init bash  # Ensure conda is properly initialized
 
       - name: Create and Activate Conda Environment
         run: |
           source $HOME/miniconda3/etc/profile.d/conda.sh
           conda env create -f .github/workflows/environment.yml  # Assuming environment.yml exists in your repo
-
-      - name: Install dependencies
+          conda activate myenv  # Assuming your env name is myenv (change if different)
+          conda install pytest  # Install testing tools in the environment
+          pip install flake8   # Install flake8 using pip within the environment
+          
+      - name: Activate Conda Environment
         run: |
           source $HOME/miniconda3/etc/profile.d/conda.sh
-          conda activate myenv  # Assuming your env name is myenv (change if different)
-          pip install flake8   #Install flake8 using pip within the environment
-          conda install pytest  # Install testing tools in the environment
+          conda activate myenv
 
       - name: Lint with flake8
         run: |
+          source $HOME/miniconda3/etc/profile.d/conda.sh
+          conda activate myenv
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
       - name: Test with pytest
         run: |
+          source $HOME/miniconda3/etc/profile.d/conda.sh
+          conda activate myenv
           pytest
 
       # Run main.js if it exists (optional)
