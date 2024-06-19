@@ -31,7 +31,8 @@ jobs:
         run: |
           source $HOME/miniconda3/etc/profile.d/conda.sh
           conda activate myenv  # Assuming your env name is myenv (change if different)
-          conda install flake8 pytest  # Install testing tools in the environment
+          pip install flake8   #Install flake8 using pip within the environment
+          conda install pytest  # Install testing tools in the environment
 
       - name: Lint with flake8
         run: |
