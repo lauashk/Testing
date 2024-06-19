@@ -1,33 +1,20 @@
-name: Python Package using Conda
+name: Python Package with Conda
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build-linux:
+  build-and-test:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 5
-
     steps:
       - uses: actions/checkout@v3
-
-      # Setup Node.js 20
-      - name: Set up Node.js 20
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
 
       - name: Set up Python 3.8 and Conda
         uses: actions/setup-python@v3
         with:
           python-version: 3.8
-          architecture: 'x64'
 
       - name: Install Miniconda
         run: |
@@ -35,51 +22,26 @@ jobs:
           bash miniconda.sh -b -p $HOME/miniconda3
           rm miniconda.sh
 
-      - name: Configure Conda
-        run: |
-          echo ". $HOME/miniconda3/etc/profile.d/conda.sh" >> $HOME/.bashrc
-
-      - name: Initialize Conda
-        run: |
-          source $HOME/.bashrc
-
-      - name: Download environment.yml
-        run: |
-          echo "name: myenv" > .github/workflows/environment.yml
-          echo "channels:" >> .github/workflows/environment.yml
-          echo "  - defaults" >> .github/workflows/environment.yml
-          echo "dependencies:" >> .github/workflows/environment.yml
-          echo "  - python=3.8" >> .github/workflows/environment.yml
-          echo "  - numpy" >> .github/workflows/environment.yml
-          echo "  - pandas" >> .github/workflows/environment.yml
-          echo "  - scikit-learn" >> .github/workflows/environment.yml
-          echo "  - matplotlib" >> .github/workflows/environment.yml
-          echo "  - seaborn" >> .github/workflows/environment.yml
-          echo "  - jupyter" >> .github/workflows/environment.yml
-          echo "  - pytest" >> .github/workflows/environment.yml
-          echo "  - flake8" >> .github/workflows/environment.yml
-
-      - name: Create and Activate Conda environment
+      - name: Create and Activate Conda Environment
         run: |
           source $HOME/miniconda3/etc/profile.d/conda.sh
-          conda env create -f .github/workflows/environment.yml
-          conda activate myenv
+          conda env create -f environment.yml  # Assuming environment.yml exists in your repo
+
+      - name: Install dependencies
+        run: |
+          source $HOME/miniconda3/etc/profile.d/conda.sh
+          conda activate myenv  # Assuming your env name is myenv (change if different)
+          conda install flake8 pytest  # Install testing tools in the environment
 
       - name: Lint with flake8
         run: |
-          source $HOME/miniconda3/etc/profile.d/conda.sh
-          conda activate myenv
-          pip install flake8
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
       - name: Test with pytest
         run: |
-          source $HOME/miniconda3/etc/profile.d/conda.sh
-          conda activate myenv
           pytest
 
-      # Check if main.js exists (if needed)
+      # Run main.js if it exists (optional)
       - name: Check if main.js exists
         id: check_main_js
         run: |
@@ -89,7 +51,6 @@ jobs:
             echo "main_js_exists=false" >> $GITHUB_ENV
           fi
 
-      # Run main.js if it exists (if needed)
       - name: Run main.js
         if: env.main_js_exists == 'true'
         run: |
