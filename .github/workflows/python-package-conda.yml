@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-and-test:
@@ -31,7 +34,7 @@ jobs:
           conda activate myenv  # Assuming your env name is myenv (change if different)
           conda install pytest  # Install testing tools in the environment
           pip install flake8   # Install flake8 using pip within the environment
-          
+
       - name: Activate Conda Environment
         run: |
           source $HOME/miniconda3/etc/profile.d/conda.sh
@@ -43,11 +46,16 @@ jobs:
           conda activate myenv
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
+      - name: Show directory structure for debugging
+        run: |
+          echo "Directory structure:"
+          find .
+
       - name: Test with pytest
         run: |
           source $HOME/miniconda3/etc/profile.d/conda.sh
           conda activate myenv
-          pytest
+          pytest --maxfail=5 --disable-warnings -v
 
       # Run main.js if it exists (optional)
       - name: Check if main.js exists
