@@ -11,6 +11,7 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
@@ -32,13 +33,13 @@ jobs:
           source $HOME/miniconda3/etc/profile.d/conda.sh
           conda env create -f .github/workflows/environment.yml  # Assuming environment.yml exists in your repo
           conda activate myenv  # Assuming your env name is myenv (change if different)
-          conda install pytest  # Install testing tools in the environment
-          pip install flake8   # Install flake8 using pip within the environment
 
-      - name: Activate Conda Environment
+      - name: Install Python Packages
         run: |
           source $HOME/miniconda3/etc/profile.d/conda.sh
           conda activate myenv
+          conda install pytest  # Install testing tools in the environment
+          pip install flake8   # Install flake8 using pip within the environment
 
       - name: Lint with flake8
         run: |
@@ -51,7 +52,6 @@ jobs:
           echo "Directory structure:"
           find .
 
-      # Run main.js if it exists (optional)
       - name: Check if main.js exists
         id: check_main_js
         run: |
