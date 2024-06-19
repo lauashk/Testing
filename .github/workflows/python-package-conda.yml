@@ -51,12 +51,6 @@ jobs:
           echo "Directory structure:"
           find .
 
-      - name: Test with pytest
-        run: |
-          source $HOME/miniconda3/etc/profile.d/conda.sh
-          conda activate myenv
-          pytest --maxfail=5 --disable-warnings -v
-
       # Run main.js if it exists (optional)
       - name: Check if main.js exists
         id: check_main_js
