@@ -25,7 +25,7 @@ jobs:
       - name: Create and Activate Conda Environment
         run: |
           source $HOME/miniconda3/etc/profile.d/conda.sh
-          conda env create -f environment.yml  # Assuming environment.yml exists in your repo
+          conda env create -f .github/workflows/environment.yml  # Assuming environment.yml exists in your repo
 
       - name: Install dependencies
         run: |
