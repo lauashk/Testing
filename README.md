@@ -2,7 +2,7 @@ Don't worry if the page isn't updated yet! Currently putting the finishing touch
 
 During my masters program in data science, I had the opportunity to collaborate on multiple group projects focused on various subject areas (in order of timeline):
 
-1. Statistical Methods 
+1. Statistical Methods -  
 Analyze a dataset of 1000 samples containing daily returns for an ETF, crude oil prices, gold prices, and JPMorgan stock. Calculate the sample mean, standard deviation, and correlations between each pair of variables using scipy, matplotlib, seaborn and statsmodels packages.
 
 3. Linear Algebra
