@@ -8,7 +8,8 @@ Analyze a dataset of 1000 samples containing daily returns for an ETF, crude oil
 3. Linear Algebra
 Spotify song popularity prediction - Our team used regression methods, such as Principal Linear Regression (PCR) and standard linear regression, to predict song popularity using song characteristics like loudness and tempo.
 
-4. Machine Learning (to be uploaded)
+4. Machine Learning - Predictive Analysis for Heart Attack Predisposition through Implementation of Machine Learning Algorithms
+(to be uploaded)
 
 5. Deep Learning
 XG Boost overview - All students were tasked to give a short presentation about a ML algorithm to our fellow classmates and how it enhances the field of deep learning! From this paper written by Tianqi Chen and Carlos Guestrin from U of Washington, XG Boost is an awesome supervised learning method using decision trees to form a single predictive model.
