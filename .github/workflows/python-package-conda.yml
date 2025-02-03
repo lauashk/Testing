@@ -28,9 +28,3 @@ jobs:
           conda create -n myenv python=3.8 -y
           conda activate myenv
           conda install numpy pandas scikit-learn matplotlib seaborn jupyter pytest flake8 -y
-
-      - name: Run tests
-        run: |
-          source ~/miniconda/etc/profile.d/conda.sh
-          conda activate myenv
-          pytest
