@@ -17,10 +17,8 @@ XG Boost overview - All students were tasked to give a short presentation about 
 5. Big Data Technologies
 Instacart analysis - Using an Instacart dataset comprised of 3M orders from 200K users, Tableau visualizations were created to understand item purchase popularity, time of orders, customer segmentation metrics, shopping patterns via Market Basket Analysis, and association rule mining to statistically confirm product recommendations for shoppers to add to customer’s Instacart order
 
-6. Time Series Analysis (to be uploaded)
-
-7. Generative AI
+6. Generative AI
 Visa Legal Advisor POC - In this prototype, my team created a chatbot using Retrieval Augmented Generation (RAG) framework for users to ask legal advice/consultation on H-1B visa process
 
-8.Web Mining
+7.Web Mining
 Stock ETF Earning Calls Analysis - This project aimed to use automation, natural language processing, and analytics to extract insights from earnings calls to empower investors and contribute to finance, sentiment analysis, and student education.
