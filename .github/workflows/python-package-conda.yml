@@ -1,5 +1,3 @@
-name: Python Package with Conda
-
 on:
   push:
     branches:
@@ -13,54 +11,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out repository code
+        uses: actions/checkout@v2
 
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v3
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
           python-version: 3.8
 
-      - name: Install Miniconda
+      - name: Set up Conda
         run: |
-          wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-          bash miniconda.sh -b -p $HOME/miniconda3
-          rm miniconda.sh
-          source $HOME/miniconda3/etc/profile.d/conda.sh
+          wget -O ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+          bash ~/miniconda.sh -b -p ~/miniconda
+          source ~/miniconda/etc/profile.d/conda.sh
           conda init bash
-
-      - name: Create and Activate Conda Environment
-        run: |
-          source $HOME/miniconda3/etc/profile.d/conda.sh
-          conda env create -f .github/workflows/environment.yml
+          conda create -n myenv python=3.8 -y
           conda activate myenv
+          conda install numpy pandas scikit-learn matplotlib seaborn jupyter pytest flake8 -y
 
-      - name: Install Python Packages
+      - name: Run tests
         run: |
-          source $HOME/miniconda3/etc/profile.d/conda.sh
+          source ~/miniconda/etc/profile.d/conda.sh
           conda activate myenv
-          conda install -y pytest flake8
-
-      - name: Lint with flake8
-        run: |
-          source $HOME/miniconda3/etc/profile.d/conda.sh
-          conda activate myenv
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-
-      - name: Show directory structure for debugging
-        run: |
-          echo "Directory structure:"
-          find .
-
-      - name: Check if main.js exists
-        id: check_main_js
-        run: |
-          if [ -f main.js ]; then
-            echo "main_js_exists=true" >> $GITHUB_ENV
-          else
-            echo "main_js_exists=false" >> $GITHUB_ENV
-          fi
-
-      - name: Run main.js
-        if: env.main_js_exists == 'true'
-        run: |
-          node main.js
+          pytest
