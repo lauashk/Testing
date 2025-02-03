@@ -18,5 +18,5 @@ During my masters program in data science, I had the opportunity to collaborate 
 6. Generative AI
 [Chatbot RAG Langchain Openai.pdf, Visa Legal Advisor POC.pdf] - In this prototype, my team created a chatbot using Retrieval Augmented Generation (RAG) framework for users to ask legal advice/consultation on H-1B visa process
 
-7.Web Mining
+7. Web Mining
 [Stock ETF Earning Calls Transcripts Extraction] - This project aimed to use automation, natural language processing, and analytics to extract insights from earnings calls to empower investors and contribute to finance, sentiment analysis, and student education.
